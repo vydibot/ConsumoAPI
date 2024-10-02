@@ -1,11 +1,26 @@
 package com.acm.consumoapi;
 
+import com.acm.consumoapi.service.PersonajeService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class WebAplication {
+public class ConsumoApiApplication implements CommandLineRunner {
+
+    private PersonajeService personajeService;
+
+    public ConsumoApiApplication(@Autowired PersonajeService personajeService) {
+        this.personajeService = personajeService;
+    }
+
     public static void main(String[] args) {
-        SpringApplication.run(WebAplication.class, args);
+        SpringApplication.run(ConsumoApiApplication.class, args);
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+        personajeService.getPersonajeByNameUsinRest("rick");
     }
 }

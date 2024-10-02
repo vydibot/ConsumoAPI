@@ -1,4 +1,11 @@
 package com.acm.consumoapi.logic;
 
-public record PersonajeDTO() {
+
+import com.google.gson.annotations.SerializedName;
+
+public record PersonajeDTO(@SerializedName("id")int id,
+                           @SerializedName("name")String name,
+                           @SerializedName("status")String status,
+                           @SerializedName("species")String species
+                           ) {
 }
