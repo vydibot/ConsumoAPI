@@ -33,15 +33,6 @@ public class PersonajeService {
         this.restTemplate = restTemplate;
     }
 
-//    public void getPersonajeByNameUsinRest(String nombre){
-//        StringBuilder str = new StringBuilder();
-//
-//        str.append("https://rickandmortyapi.com/api/character/");
-//        str.append("?name="+nombre);
-//        PersonajeDTO p=restTemplate.getForObject(URI.create(str.toString()), PersonajeDTO.class);
-//        logger.info(p.toString());
-//    }
-
     public PersonajeDTO getPersonajeByName(String nombre) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.setDefaultPrettyPrinter(new DefaultPrettyPrinter());

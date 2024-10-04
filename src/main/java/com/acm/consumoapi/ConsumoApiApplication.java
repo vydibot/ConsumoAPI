@@ -9,16 +9,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class ConsumoApiApplication  {
 
-//    public ConsumoApiApplication(@Autowired PersonajeService personajeService) {
-//        this.personajeService = personajeService;
-//    }
-
     public static void main(String[] args) {
         SpringApplication.run(ConsumoApiApplication.class, args);
     }
 
-//    @Override
-//    public void run(String... args) throws Exception {
-//        personajeService.getPersonajeByName("");
-//    }
 }
