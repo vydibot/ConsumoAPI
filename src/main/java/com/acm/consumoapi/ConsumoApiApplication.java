@@ -7,20 +7,18 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ConsumoApiApplication implements CommandLineRunner {
+public class ConsumoApiApplication  {
 
-    private PersonajeService personajeService;
-
-    public ConsumoApiApplication(@Autowired PersonajeService personajeService) {
-        this.personajeService = personajeService;
-    }
+//    public ConsumoApiApplication(@Autowired PersonajeService personajeService) {
+//        this.personajeService = personajeService;
+//    }
 
     public static void main(String[] args) {
         SpringApplication.run(ConsumoApiApplication.class, args);
     }
 
-    @Override
-    public void run(String... args) throws Exception {
-        personajeService.getPersonajeByNameUsinRest("rick");
-    }
+//    @Override
+//    public void run(String... args) throws Exception {
+//        personajeService.getPersonajeByName("");
+//    }
 }

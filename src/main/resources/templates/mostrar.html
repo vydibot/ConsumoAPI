@@ -5,6 +5,9 @@
     <title>Personaje</title>
 </head>
 <body>
-<h1>El personaje es: <span th:text="${personaje}"></span></h1>
+<h1>El personaje es: <span th:text="${personaje.name}"></span></h1>
+<p>Status: <span th:text="${personaje.id}"></span></p>
+<p>Status: <span th:text="${personaje.status}"></span></p>
+<p>Especie: <span th:text="${personaje.species}"></span></p>
 </body>
 </html>

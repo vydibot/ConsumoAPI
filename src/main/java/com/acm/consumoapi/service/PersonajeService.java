@@ -3,12 +3,10 @@ package com.acm.consumoapi.service;
 import com.acm.consumoapi.logic.PersonajeDTO;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.acm.consumoapi.persistencia.entity.Personaje;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -25,45 +23,62 @@ import java.net.http.HttpResponse;
 @Service
 public class PersonajeService {
 
-    private  Logger logger = LoggerFactory.getLogger(PersonajeService.class);
+    private Logger logger = LoggerFactory.getLogger(PersonajeService.class);
 
-    private  RestTemplate restTemplate;
-
-    private  HttpClient client;
+    private RestTemplate restTemplate;
+    private HttpClient client;
 
     public PersonajeService(@Autowired HttpClient client, @Autowired RestTemplate restTemplate) {
         this.client = client;
         this.restTemplate = restTemplate;
     }
 
-    public void getPersonajeByNameUsinRest(String nombre){
-        StringBuilder str = new StringBuilder();
+//    public void getPersonajeByNameUsinRest(String nombre){
+//        StringBuilder str = new StringBuilder();
+//
+//        str.append("https://rickandmortyapi.com/api/character/");
+//        str.append("?name="+nombre);
+//        PersonajeDTO p=restTemplate.getForObject(URI.create(str.toString()), PersonajeDTO.class);
+//        logger.info(p.toString());
+//    }
 
-        str.append("https://rickandmortyapi.com/api/character/");
-        str.append("?name="+nombre);
-        PersonajeDTO p=restTemplate.getForObject(URI.create(str.toString()), PersonajeDTO.class);
-        logger.info(p.toString());
-    }
-
-    public void getPersonajeByName(String nombre){
+    public PersonajeDTO getPersonajeByName(String nombre) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.setDefaultPrettyPrinter(new DefaultPrettyPrinter());
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         StringBuilder str = new StringBuilder();
         str.append("https://rickandmortyapi.com/api/character/");
-        str.append("?name="+nombre);
+        str.append("?name=" + nombre);
+        logger.info(str.toString());
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(str.toString())).GET().build();
 
-        try{
+        try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             logger.info(response.body());
-            PersonajeDTO p = gson.fromJson(response.body(), PersonajeDTO.class);
-            mapper.writeValue(new File("personaje.json"), p);
-            logger.info(p.toString());
-        }catch(IOException | InterruptedException e){
+
+            JsonElement jsonElement = gson.fromJson(response.body(), JsonElement.class);
+
+            if (jsonElement.isJsonObject()) {
+                JsonObject jsonObject = jsonElement.getAsJsonObject();
+
+                if (jsonObject.has("results")) {
+                    JsonArray resultsArray = jsonObject.getAsJsonArray("results");
+
+                    if (resultsArray.size() > 0) {
+                        JsonObject firstResult = resultsArray.get(0).getAsJsonObject();
+
+                        return gson.fromJson(firstResult, PersonajeDTO.class);
+                    }
+                }
+            }
+            logger.warn("No se encontraron personajes para el nombre: {}", nombre);
+            return null;
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
+            return null;
         }
     }
-
-
 }
+
+
+
